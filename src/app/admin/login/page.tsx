@@ -24,8 +24,17 @@ export default function AdminLoginPage() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.message || "Connexion impossible.");
-      // Navigation dure : garantit que le cookie de session tout juste posé
-      // est pris en compte, sans risque de cache routeur.
+      // Vérifie que le navigateur renvoie bien le cookie avant de naviguer :
+      // en cas de cookies tiers bloqués (iframe, Safari strict, navigation
+      // privée), on affiche un message clair au lieu d'un retour silencieux au login.
+      const check = await fetch("/api/admin/session", { cache: "no-store" });
+      const session = await check.json().catch(() => ({}));
+      if (!check.ok || !session.authenticated) {
+        throw new Error(
+          "Connexion acceptée, mais votre navigateur a refusé le cookie de session (cookies tiers bloqués ou navigation privée). Ouvrez le site dans un onglet normal, autorisez les cookies pour ce site, puis réessayez."
+        );
+      }
+      // Navigation dure : garantit un état serveur frais, sans cache routeur.
       window.location.assign("/admin");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Connexion impossible.");

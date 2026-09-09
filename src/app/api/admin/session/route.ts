@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
 import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
-import { COOKIE_MAX_AGE, COOKIE_NAME, createToken, isAdminConfigured } from "@/lib/auth";
+import {
+  COOKIE_MAX_AGE,
+  COOKIE_NAME,
+  createToken,
+  isAdminConfigured,
+  isAuthenticated,
+} from "@/lib/auth";
 
 const schema = z.object({ password: z.string().min(1, "Mot de passe requis.") });
 
@@ -24,6 +30,16 @@ function cookieAttrs(req: Request) {
     path: "/",
     maxAge: COOKIE_MAX_AGE,
   };
+}
+
+/**
+ * Vérification de session : permet à la page de connexion de confirmer que
+ * le navigateur a bien accepté (et renvoie) le cookie, avant de naviguer.
+ * Sans cela, un bloqueur de cookies tiers provoque un silencieux retour au login.
+ */
+export async function GET() {
+  const authenticated = await isAuthenticated();
+  return NextResponse.json({ authenticated });
 }
 
 export async function POST(req: Request) {
