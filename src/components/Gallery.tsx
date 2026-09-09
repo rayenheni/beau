@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, ChevronLeft, ChevronRight, MoveHorizontal, X } from "lucide-react";
 import { FadeUp, SectionHeader } from "./Reveal";
 import { toast } from "./Toast";
+import { SALON } from "@/lib/salon";
 
 const items = [
   { src: "/images/hair-color.jpg", caption: "Balayage caramel", ratio: "aspect-[3/4]" },
@@ -199,13 +200,13 @@ export default function Gallery() {
         <FadeUp delay={0.2}>
           <div className="mt-10 text-center">
             <a
-              href="https://www.instagram.com/salon.salwa/"
+              href={SALON.instagram}
               target="_blank"
               rel="noreferrer"
               onClick={() => toast("Vous allez découvrir notre univers Instagram ✨", "info")}
               className="group inline-flex items-center gap-2 rounded-full border border-espresso/20 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] text-espresso transition-all duration-300 hover:border-bronze hover:text-bronze"
             >
-              @salon.salwa sur Instagram
+              {SALON.instagramHandle} sur Instagram
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
           </div>

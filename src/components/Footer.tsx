@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUp, Clock, MapPin, Phone } from "lucide-react";
 import { FacebookIcon, InstagramIcon } from "./BrandIcons";
+import { SALON } from "@/lib/salon";
 
 const nav = [
   { label: "Le Salon", href: "#salon" },
@@ -16,17 +17,16 @@ export default function Footer() {
     <footer className="relative overflow-hidden bg-espresso pt-20 text-ivory">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 pb-16 md:grid-cols-4 md:px-10">
         <div className="md:col-span-2">
-          <p className="font-serif text-4xl font-medium italic tracking-tight">Salwa</p>
+          <p className="font-serif text-4xl font-medium italic tracking-tight">{SALON.shortName}</p>
           <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.42em] text-bronze-light">
-            Coiffure · Esthétique
+            {SALON.tagline}
           </p>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-ivory/60">
-            « Il est toujours temps de se faire plus belle. » Salon de coiffure et
-            d&apos;esthétique au cœur de Tunis, dédié à votre beauté depuis plus de dix ans.
+            « {SALON.slogan} » {SALON.description}
           </p>
           <div className="mt-7 flex gap-3">
             <a
-              href="https://www.facebook.com/p/Salon-Salwa-de-Coiffure-dEsth%C3%A9tique-100063708455598/"
+              href={SALON.facebook}
               target="_blank"
               rel="noreferrer"
               aria-label="Facebook"
@@ -35,7 +35,7 @@ export default function Footer() {
               <FacebookIcon className="h-5 w-5" />
             </a>
             <a
-              href="https://www.instagram.com/salon.salwa/"
+              href={SALON.instagram}
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram"
@@ -72,12 +72,12 @@ export default function Footer() {
           <ul className="mt-5 space-y-4 text-sm text-ivory/65">
             <li className="flex items-start gap-3">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-bronze-light" />
-              Rue Houcine Bouzaiene, à côté du Théâtre de l&apos;Étoile du Nord, Centre-Ville, Tunis
+              {SALON.address}
             </li>
             <li className="flex items-center gap-3">
               <Phone className="h-4 w-4 shrink-0 text-bronze-light" />
-              <a href="tel:+21629311109" className="transition-colors hover:text-ivory">
-                +216 29 311 109
+              <a href={`tel:${SALON.phone}`} className="transition-colors hover:text-ivory">
+                {SALON.phoneDisplay}
               </a>
             </li>
             <li className="flex items-start gap-3">
@@ -97,14 +97,14 @@ export default function Footer() {
 
       <div aria-hidden className="select-none overflow-hidden leading-none">
         <p className="text-outline -mb-[4vw] text-center font-serif text-[24vw] font-medium italic tracking-tight">
-          Salwa
+          {SALON.shortName}
         </p>
       </div>
 
       <div className="relative border-t border-ivory/10 py-6">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 text-xs text-ivory/45 sm:flex-row md:px-10">
           <div className="flex flex-col items-center gap-2 sm:items-start">
-            <p>© 2026 Salon Salwa de Coiffure &amp; d&apos;Esthétique — Tunis. Tous droits réservés.</p>
+            <p>© 2026 {SALON.name} — {SALON.city}. Tous droits réservés.</p>
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
               <Link href="/legal/mentions-legales" className="transition-colors hover:text-ivory">
                 Mentions légales

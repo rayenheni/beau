@@ -820,14 +820,14 @@ export default function Booking() {
                 </p>
                 <div className="mt-4 space-y-3">
                   <a
-                    href="tel:+21629311109"
+                    href={`tel:${SALON.phone}`}
                     className="group flex items-center gap-3 rounded-xl bg-ivory px-4 py-3 text-sm font-semibold text-espresso transition-colors hover:bg-white"
                   >
                     <Phone className="h-4 w-4 text-bronze" />
                     {SALON.phoneDisplay}
                   </a>
                   <a
-                    href={whatsappLink("Bonjour Salon Salwa 👋 j'ai besoin d'aide pour réserver.")}
+                    href={whatsappLink(`Bonjour ${SALON.shortName} 👋 j'ai besoin d'aide pour réserver.`)}
                     target="_blank"
                     rel="noreferrer"
                     className="group flex items-center gap-3 rounded-xl bg-ivory px-4 py-3 text-sm font-semibold text-espresso transition-colors hover:bg-white"

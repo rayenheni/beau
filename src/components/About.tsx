@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Gem, MapPin, Scissors } from "lucide-react";
 import { FadeUp, SectionHeader } from "./Reveal";
+import { SALON } from "@/lib/salon";
 
 const features = [
   {
@@ -16,7 +17,7 @@ const features = [
   {
     icon: MapPin,
     title: "Emplacement idéal",
-    text: "À deux pas du Théâtre de l'Étoile du Nord, en plein centre-ville de Tunis.",
+    text: `Bien situé et facile d'accès — ${SALON.addressShort}.`,
   },
 ];
 
@@ -37,10 +38,10 @@ export default function About() {
             title={
               <>
                 Un écrin de beauté{" "}
-                <span className="italic text-bronze">au cœur de Tunis</span>
+                <span className="italic text-bronze">au cœur de {SALON.city}</span>
               </>
             }
-            description="Niché rue Houcine Bouzaiene, à côté du Théâtre de l'Étoile du Nord, le Salon Salwa est l'adresse des Tunisoises qui veulent le meilleur pour leurs cheveux et leur peau."
+            description={`Niché ${SALON.address}, ${SALON.name} est l'adresse des Tunisoises qui veulent le meilleur pour leurs cheveux et leur peau.`}
           />
 
           <FadeUp delay={0.25}>
@@ -85,7 +86,7 @@ export default function About() {
           <div className="relative aspect-[4/5] overflow-hidden rounded-b-[2rem] rounded-t-[12rem] shadow-[0_40px_80px_-40px_rgba(60,45,33,0.5)]">
             <Image
               src="/images/salon-interior.jpg"
-              alt="Intérieur chaleureux du Salon Salwa"
+              alt={`Intérieur chaleureux — ${SALON.name}`}
               fill
               className="object-cover transition-transform duration-[1400ms] ease-out hover:scale-[1.04]"
               sizes="(max-width: 768px) 100vw, 45vw"
@@ -109,7 +110,7 @@ export default function About() {
               « Notre devise : il est toujours temps de se faire plus belle. »
             </p>
             <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.3em] text-bronze-light">
-              — Salwa
+              — {SALON.shortName}
             </p>
           </div>
         </FadeUp>

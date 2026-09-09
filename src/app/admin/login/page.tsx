@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, KeyRound, Loader2, Lock } from "lucide-react";
 import { EASE } from "@/components/Reveal";
+import { SALON } from "@/lib/salon";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -49,7 +50,7 @@ export default function AdminLoginPage() {
           <span className="mx-auto grid h-14 w-14 place-items-center rounded-full border border-bronze/50 text-bronze-light">
             <Lock className="h-6 w-6" />
           </span>
-          <p className="mt-6 font-serif text-4xl font-medium italic tracking-tight">Salwa</p>
+          <p className="mt-6 font-serif text-4xl font-medium italic tracking-tight">{SALON.shortName}</p>
           <p className="mt-2 text-[9px] font-bold uppercase tracking-[0.42em] text-bronze-light">
             Espace pro · Accès réservé
           </p>
@@ -105,7 +106,7 @@ export default function AdminLoginPage() {
 
           <p className="mt-5 text-center text-[11px] leading-relaxed text-ivory/40">
             Cet espace est réservé à l&apos;équipe du salon. La gestion des rendez-vous
-            nécessite un mot de passe fourni par Salwa.
+            nécessite un mot de passe fourni par l&apos;équipe du salon.
           </p>
         </form>
 

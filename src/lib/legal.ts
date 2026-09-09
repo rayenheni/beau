@@ -1,3 +1,5 @@
+import { SALON } from "./salon";
+
 export type LegalSection = { heading: string; body: string[] };
 
 export type LegalDoc = {
@@ -21,9 +23,9 @@ export const legalDocs: LegalDoc[] = [
       {
         heading: "Éditeur du site",
         body: [
-          "Salon Salwa de Coiffure & d'Esthétique — entreprise individuelle exerçant une activité de coiffure et de soins esthétiques.",
-          "Adresse : Rue Houcine Bouzaiene, à côté du Théâtre de l'Étoile du Nord, Centre-Ville, Tunis, Tunisie.",
-          "Téléphone : +216 29 311 109.",
+          `${SALON.name} — entreprise individuelle exerçant une activité de coiffure et de soins esthétiques.`,
+          `Adresse : ${SALON.address}, Tunisie.`,
+          `Téléphone : ${SALON.phoneDisplay}.`,
           "Le salon est joignable du lundi au samedi, de 9h00 à 19h00.",
         ],
       },
@@ -81,7 +83,7 @@ export const legalDocs: LegalDoc[] = [
       {
         heading: "Destinataires",
         body: [
-          "Seule l'équipe du Salon Salwa accède à ces informations, via un espace d'administration protégé par mot de passe.",
+          `Seule l'équipe du ${SALON.name} accède à ces informations, via un espace d'administration protégé par mot de passe.`,
           "Aucune donnée n'est vendue, louée ou transmise à des tiers à des fins commerciales.",
         ],
       },
@@ -89,7 +91,7 @@ export const legalDocs: LegalDoc[] = [
         heading: "Vos droits",
         body: [
           "Vous disposez d'un droit d'accès, de rectification, d'opposition et de suppression des données vous concernant.",
-          "Vous pouvez exercer ces droits en nous appelant au +216 29 311 109 ou directement au salon. Vous pouvez également annuler librement un rendez-vous depuis la rubrique « Retrouver ou annuler ma demande » du site.",
+          "Vous pouvez exercer ces droits en nous appelant au " + SALON.phoneDisplay + " ou directement au salon. Vous pouvez également annuler librement un rendez-vous depuis la rubrique « Retrouver ou annuler ma demande » du site.",
           "Conformément à la loi n° 2004-63 relative à la protection des données à caractère personnel, vous pouvez saisir l'Autorité de protection des données personnelles (INPDP) en cas de litige.",
         ],
       },
@@ -107,7 +109,7 @@ export const legalDocs: LegalDoc[] = [
     eyebrow: "Prestations du salon",
     updated: "Janvier 2026",
     intro:
-      "Les présentes conditions régissent les prestations de coiffure et d'esthétique réalisées au Salon Salwa, ainsi que l'utilisation du service de réservation en ligne.",
+      `Les présentes conditions régissent les prestations de coiffure et d'esthétique réalisées au ${SALON.name}, ainsi que l'utilisation du service de réservation en ligne.`,
     sections: [
       {
         heading: "1. Réservation",

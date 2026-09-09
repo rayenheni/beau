@@ -60,19 +60,24 @@ espace professionnel protégé et libre-service client.
 # 1. Installer les dépendances
 npm install
 
-# 2. Configurer l'environnement
-cp .env.example .env
-#   → renseigner DATABASE_URL et ADMIN_PASSWORD
+# 2. Configurer le salon (assistant interactif → génère .env.local)
+npm run new-client
 
-# 3. Créer les tables
-npx drizzle-kit push
+# 3. Créer les tables sur la base Neon DU CLIENT
+DATABASE_URL="<connection-string-neon>" npm run db:push
 
-# 4. Lancer en développement
+# 4. (Optionnel) insérer un jeu de démo pour présenter le back-office
+DATABASE_URL="<connection-string-neon>" npm run seed:demo
+
+# 5. Lancer en développement
 npm run dev
-
-# 5. Construire pour la production
-npm run build && npm run start
 ```
+
+> **Nouveau client ?** Suivez le guide pas-à-pas : [`docs/ONBOARDING.md`](docs/ONBOARDING.md)
+> (comptes, déploiement Vercel, domaine .tn, remise — 60 à 90 min).
+> Modèle d'hébergement et coûts : [`docs/HOSTING.md`](docs/HOSTING.md).
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/rayenheni/beau&env=DATABASE_URL,ADMIN_PASSWORD,NEXT_PUBLIC_SITE_URL&project-name=salon-beaute&repository-name=salon-beaute)
 
 ### Variables d'environnement
 
@@ -81,6 +86,7 @@ npm run build && npm run start
 | `DATABASE_URL` | Connexion PostgreSQL | Oui |
 | `ADMIN_PASSWORD` | Mot de passe de l'espace pro (`/admin`) | Oui |
 | `NEXT_PUBLIC_SITE_URL` | URL publique (SEO, sitemap) | Recommandé |
+| `NEXT_PUBLIC_SALON_*` | Identité du salon : nom, téléphones, adresse, préfixe de référence, réseaux sociaux, carte (liste complète dans `.env.example`) | Oui (défauts inclus) |
 | `RESEND_API_KEY` | Envoi des alertes e-mail | Non |
 | `MAIL_FROM` | Expéditeur des alertes | Non |
 | `MAIL_TO` | Destinataire des alertes | Non |
@@ -89,9 +95,10 @@ npm run build && npm run start
 > de gestion renvoient une erreur 503.** C'est un choix de sécurité délibéré : il vaut
 > mieux un back-office indisponible qu'un back-office ouvert à tous.
 >
-> 📌 **Important** : ces variables doivent être définies **sur la plateforme
-> d'hébergement** (Vercel, Railway, VPS…), pas seulement dans le fichier `.env` local.
-> Un fichier `.env` n'est pas versionné et peut être réinitialisé selon l'hébergeur.
+> 📌 **Important** : ces variables doivent être définies **sur le compte Vercel
+> du client** (Settings → Environment Variables), pas seulement dans `.env.local`.
+> Voir [`docs/ONBOARDING.md`](docs/ONBOARDING.md). Un fichier `.env*` n'est pas
+> versionné et peut être réinitialisé selon l'hébergeur.
 
 ---
 
@@ -125,16 +132,20 @@ src/
 
 Tout le contenu métier est centralisé dans deux fichiers :
 
-| Fichier | Contenu |
-| --- | --- |
-| `src/lib/services.ts` | Prestations, prix, durées, images, catégories, capacité par créneau |
-| `src/lib/booking.ts` | Nom du salon, téléphone, adresse, liens WhatsApp |
-| `src/lib/legal.ts` | Mentions légales, confidentialité, CGV |
-| `src/app/globals.css` | Palette de couleurs et typographies (`@theme`) |
-| `public/images/` | Photographies |
+| Fichier | Contenu | Comment |
+| --- | --- | --- |
+| Variables `NEXT_PUBLIC_SALON_*` | Nom, téléphones, adresse, slogan, réseaux, carte, SEO | Via `npm run new-client`, zéro code |
+| `src/lib/salon.ts` | Valeurs par défaut de l'identité ci-dessus | Ne toucher qu'en dernier recours |
+| `src/lib/services.ts` | Prestations, prix, durées, images, catégories | Contenu par client |
+| `src/lib/legal.ts` | Mentions légales, confidentialité, CGV | + matricule fiscal du salon |
+| `src/app/globals.css` | Palette de couleurs et typographies (`@theme`) | Optionnel, facturable |
+| `public/images/` | Photographies | Mêmes noms = zéro code |
+| `src/components/Testimonials.tsx` | Avis clientes | Contenu par client |
 
-Le remplacement des visuels + la modification de `services.ts` permettent de livrer
-un site à un nouveau salon sans toucher à la logique applicative.
+> ✅ **Zéro nom de salon en dur dans le code** : toute l'identité passe par
+> `src/lib/salon.ts` (lire : les variables d'environnement). Vérifié par :
+> `grep -ri "salwa" src --include="*.tsx" --include="ts" | grep -v salon.ts`
+> (ne doivent rester que les citations d'avis, contenu par nature).
 
 ---
 
@@ -172,6 +183,10 @@ Audit honnête, à jour du dernier développement :
 | Rappels automatiques SMS/e-mail | ❌ Manquant | Aucun cron de rappel J-1 |
 | Multi-tenant | ❌ Manquant | Un déploiement = un salon |
 | Édition du catalogue par le salon | ❌ Manquant | Prestations et prix modifiables seulement dans le code |
+| Marque blanche (1 déploiement = 1 client) | ✅ Fait | Identité 100 % par variables d'environnement |
+| Pack d'installation répétable | ✅ Fait | `new-client`, `seed:demo`, guides ONBOARDING + HOSTING |
+| Export CSV + fiche du jour imprimable | ✅ Fait | Depuis l'espace pro, par jour ou complet |
+| Rappel WhatsApp en 1 clic | ✅ Fait | Message pré-rempli par rendez-vous |
 
 **Conclusion** : le backend est **complet pour une installation mono-salon livrée
 en forfait**, à condition d'accepter les limites listées. Il ne constitue **pas**

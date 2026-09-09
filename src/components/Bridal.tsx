@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Check } from "lucide-react";
 import { FadeUp, SectionHeader } from "./Reveal";
 import BookButton from "./BookButton";
+import { SALON } from "@/lib/salon";
 
 const included = [
   "Essai coiffure & maquillage avant le grand jour",
@@ -88,7 +89,7 @@ export default function Bridal() {
             <div className="relative h-full w-full overflow-hidden rounded-b-[1.6rem] rounded-t-[11.5rem]">
               <Image
                 src="/images/bride.jpg"
-                alt="Chignon de mariée signé Salon Salwa"
+                alt={`Chignon de mariée signé ${SALON.shortName}`}
                 fill
                 className="object-cover transition-transform duration-[1400ms] ease-out hover:scale-[1.05]"
                 sizes="(max-width: 768px) 100vw, 42vw"

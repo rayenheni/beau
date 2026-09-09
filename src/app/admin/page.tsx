@@ -15,16 +15,18 @@ import { and, desc, eq, gte, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { appointments, type Appointment } from "@/db/schema";
 import AdminTable from "@/components/AdminTable";
+import AdminExport from "@/components/AdminExport";
 import LogoutButton from "@/components/LogoutButton";
 import NotificationBell from "@/components/NotificationBell";
 import SettingsForm from "@/components/SettingsForm";
 import { isAuthenticated } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
+import { SALON } from "@/lib/salon";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Espace Pro · Réservations — Salon Salwa",
+  title: `Espace Pro · Réservations — ${SALON.name}`,
   robots: { index: false, follow: false },
 };
 
@@ -113,7 +115,7 @@ export default async function AdminPage() {
       <header className="sticky top-0 z-40 border-b border-espresso/10 bg-ivory/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-6 py-4 md:px-10">
           <div>
-            <p className="font-serif text-2xl font-medium italic">Salwa</p>
+            <p className="font-serif text-2xl font-medium italic">{SALON.shortName}</p>
             <p className="text-[9px] font-bold uppercase tracking-[0.42em] text-bronze">
               Espace pro · Planning
             </p>
@@ -226,6 +228,8 @@ export default async function AdminPage() {
             </p>
           </div>
         </div>
+
+        <AdminExport rows={data} />
 
         {/* Tableau */}
         <div className="mt-8">

@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, MapPin, Menu, Phone, X } from "lucide-react";
 import { EASE } from "./Reveal";
 import { FacebookIcon, InstagramIcon } from "./BrandIcons";
+import { SALON } from "@/lib/salon";
 
 const links = [
   { label: "Le Salon", href: "#salon" },
@@ -46,12 +47,12 @@ export default function Navbar() {
         }`}
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 md:px-10">
-          <a href="#accueil" className="group flex flex-col leading-none" aria-label="Salon Salwa — Accueil">
+          <a href="#accueil" className="group flex flex-col leading-none" aria-label={`${SALON.name} — Accueil`}>
             <span className="font-serif text-3xl font-medium italic tracking-tight transition-colors group-hover:text-bronze">
-              Salwa
+              {SALON.shortName}
             </span>
             <span className="mt-1 text-[8.5px] font-bold uppercase tracking-[0.42em] text-bronze">
-              Coiffure · Esthétique
+              {SALON.tagline}
             </span>
           </a>
 
@@ -71,11 +72,11 @@ export default function Navbar() {
 
           <div className="flex items-center gap-3">
             <a
-              href="tel:+21629311109"
+              href={`tel:${SALON.phone}`}
               className="hidden items-center gap-2 text-sm font-semibold text-espresso/80 transition-colors hover:text-bronze md:flex"
             >
               <Phone className="h-4 w-4" />
-              +216 29 311 109
+              {SALON.phoneDisplay}
             </a>
             <a
               href="#reservation"
@@ -105,7 +106,7 @@ export default function Navbar() {
             className="fixed inset-0 z-[100] flex flex-col bg-espresso text-ivory"
           >
             <div className="flex items-center justify-between px-6 py-5 md:px-10">
-              <span className="font-serif text-3xl font-medium italic">Salwa</span>
+              <span className="font-serif text-3xl font-medium italic">{SALON.shortName}</span>
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Fermer le menu"
@@ -148,15 +149,15 @@ export default function Navbar() {
             <div className="grid gap-4 border-t border-ivory/10 px-8 py-6 text-sm text-ivory/60 md:grid-cols-3 md:px-14">
               <span className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-bronze-light" />
-                Centre-Ville, Tunis
+                {SALON.addressShort}
               </span>
-              <a href="tel:+21629311109" className="flex items-center gap-2 transition-colors hover:text-ivory">
+              <a href={`tel:${SALON.phone}`} className="flex items-center gap-2 transition-colors hover:text-ivory">
                 <Phone className="h-4 w-4 text-bronze-light" />
-                +216 29 311 109
+                {SALON.phoneDisplay}
               </a>
               <span className="flex items-center gap-4">
                 <a
-                  href="https://www.facebook.com/p/Salon-Salwa-de-Coiffure-dEsth%C3%A9tique-100063708455598/"
+                  href={SALON.facebook}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Facebook"
@@ -165,7 +166,7 @@ export default function Navbar() {
                   <FacebookIcon className="h-5 w-5" />
                 </a>
                 <a
-                  href="https://www.instagram.com/salon.salwa/"
+                  href={SALON.instagram}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Instagram"

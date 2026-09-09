@@ -1,7 +1,7 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 
-export const COOKIE_NAME = "salwa_admin";
+export const COOKIE_NAME = "salon_admin";
 export const COOKIE_MAX_AGE = 60 * 60 * 12; // 12 heures
 
 function secret() {

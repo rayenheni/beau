@@ -7,7 +7,7 @@ import { ArrowRight, Sparkles, Star } from "lucide-react";
 import { EASE } from "./Reveal";
 import Marquee from "./Marquee";
 import { FacebookIcon } from "./BrandIcons";
-import { requestBooking } from "@/lib/booking";
+import { SALON, requestBooking } from "@/lib/booking";
 
 function RevealLine({
   children,
@@ -59,7 +59,7 @@ export default function Hero() {
             className="mb-8 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.35em] text-bronze"
           >
             <span className="h-px w-10 bg-bronze/70" />
-            Salon de coiffure & d&apos;esthétique — Tunis Centre
+            {SALON.tagline} — {SALON.addressShort}
           </motion.p>
 
           <h1 className="font-serif text-[clamp(2.9rem,6.8vw,6.4rem)] leading-[1.02] tracking-tight">
@@ -76,7 +76,7 @@ export default function Hero() {
             transition={{ duration: 0.9, delay: 0.75, ease: EASE }}
             className="mt-8 max-w-xl text-base leading-relaxed text-espresso/70 md:text-lg"
           >
-            Au cœur de Tunis, Salwa et son équipe subliment vos cheveux et votre beauté :
+            Au cœur de {SALON.city}, {SALON.shortName} et son équipe subliment vos cheveux et votre beauté :
             balayages lumineux, lissages kératine, chignons de mariée, maquillage et soins
             du visage — avec passion, depuis plus de dix ans.
           </motion.p>
@@ -103,7 +103,7 @@ export default function Hero() {
           </motion.div>
 
           <motion.a
-            href="https://www.facebook.com/p/Salon-Salwa-de-Coiffure-dEsth%C3%A9tique-100063708455598/reviews"
+            href={SALON.facebookReviews}
             target="_blank"
             rel="noreferrer"
             initial={{ opacity: 0 }}
@@ -133,7 +133,7 @@ export default function Hero() {
             <motion.div style={{ y: imgY }} className="absolute inset-[-9%]">
               <Image
                 src="/images/hero.jpg"
-                alt="Chevelure brillance — Salon Salwa"
+                alt={`Chevelure brillance — ${SALON.name}`}
                 fill
                 priority
                 className="object-cover"
@@ -162,7 +162,7 @@ export default function Hero() {
                 />
               </defs>
               <text className="fill-current text-[8px] font-semibold uppercase tracking-[0.2em]">
-                <textPath href="#badgeCircle">Salon Salwa · Coiffure · Esthétique · Tunis ·</textPath>
+                <textPath href="#badgeCircle">{SALON.shortName} · {SALON.tagline} · {SALON.city} ·</textPath>
               </text>
             </svg>
             <Sparkles className="h-5 w-5 text-bronze-light md:h-6 md:w-6" />

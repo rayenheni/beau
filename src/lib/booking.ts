@@ -1,12 +1,9 @@
-export const SALON = {
-  name: "Salon Salwa de Coiffure & d'Esthétique",
-  phone: "+21629311109",
-  phoneDisplay: "+216 29 311 109",
-  phoneLocal: "21629311109",
-  address: "Rue Houcine Bouzaiene, à côté du Théâtre de l'Étoile du Nord, Centre-Ville, Tunis",
-};
+import { SALON } from "./salon";
 
-export const BOOKING_EVENT = "salwa:booking";
+/** Re-export : les composants importent la config depuis "@/lib/booking" ou "@/lib/salon". */
+export { SALON };
+
+export const BOOKING_EVENT = "salon:booking";
 
 export function requestBooking(serviceId?: string) {
   if (typeof window === "undefined") return;
@@ -15,8 +12,34 @@ export function requestBooking(serviceId?: string) {
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+/** Lien WhatsApp vers le salon avec message pré-rempli. */
 export function whatsappLink(text: string) {
-  return `https://wa.me/${SALON.phoneLocal}?text=${encodeURIComponent(text)}`;
+  return `https://wa.me/${SALON.phoneWhatsApp}?text=${encodeURIComponent(text)}`;
+}
+
+/** Lien WhatsApp vers une cliente (rappel manuel depuis l'espace pro). */
+export function clientWhatsAppLink(phone: string, text: string) {
+  const digits = phone.replace(/\D/g, "");
+  return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
+}
+
+/** Message de rappel J-1 / confirmation, envoyé en 1 clic depuis l'espace pro. */
+export function buildReminderText(opts: {
+  name: string;
+  service: string;
+  date: string;
+  time: string;
+  reference: string;
+}) {
+  const first = opts.name.trim().split(/\s+/)[0] || opts.name;
+  return [
+    `Bonjour ${first} 👋`,
+    `Petit rappel de votre rendez-vous ${SALON.shortName} :`,
+    `• ${opts.service}`,
+    `• ${formatFrDate(opts.date)} à ${opts.time}`,
+    `Réf : ${opts.reference}`,
+    `Merci de nous prévenir en cas d'empêchement 🙏`,
+  ].join("\n");
 }
 
 export function formatFrDate(date: string) {
@@ -56,16 +79,16 @@ export function buildIcs(opts: {
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Salon Salwa//Reservation//FR",
+    `PRODID:-//${SALON.shortName}//Reservation//FR`,
     "CALSCALE:GREGORIAN",
     "BEGIN:VEVENT",
-    `UID:${opts.reference}@salonsalwa.tn`,
+    `UID:${opts.reference}@${SALON.domain}`,
     `DTSTAMP:${stamp(new Date())}`,
     `DTSTART:${stamp(start)}`,
     `DTEND:${stamp(end)}`,
     `SUMMARY:${opts.service} — ${SALON.name}`,
     `LOCATION:${SALON.address}`,
-    `DESCRIPTION:Référence ${opts.reference} · Réservation en ligne Salon Salwa · ${SALON.phoneDisplay}`,
+    `DESCRIPTION:Référence ${opts.reference} · Réservation en ligne ${SALON.name} · ${SALON.phoneDisplay}`,
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
@@ -84,7 +107,7 @@ export function downloadIcs(opts: {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `salon-salwa-${opts.reference}.ics`;
+  a.download = `${SALON.slug}-${opts.reference}.ics`;
   document.body.appendChild(a);
   a.click();
   a.remove();

@@ -1,3 +1,9 @@
+/**
+ * CATALOGUE DU SALON — contenu par client (un déploiement = un salon).
+ * Remplacez les prestations, prix (TND), durées et images à chaque installation.
+ * Les images vivent dans public/images/ (mêmes noms = zéro code à changer).
+ * L'identité du salon (nom, téléphone, adresse…) est dans src/lib/salon.ts (variables d'environnement).
+ */
 export type CategoryId = "coiffure" | "esthetique" | "mariee";
 
 export type CatalogService = {

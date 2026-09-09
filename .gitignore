@@ -1,0 +1,19 @@
+# Dépendances
+node_modules/
+
+# Build Next.js
+.next/
+out/
+build/
+
+# Environnements (un par client — jamais versionnés)
+.env
+.env*.local
+
+# Divers
+*.pem
+.DS_Store
+*.log
+# Next.js generated
+next-env.d.ts
+*.tsbuildinfo

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { EASE } from "./Reveal";
 
-const KEY = "salwa:intro-seen";
+const KEY = "salon:intro-seen";
 const DURATION = 1700;
 
 export default function Preloader() {

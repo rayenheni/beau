@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, Info, TriangleAlert, X } from "lucide-react";
 
-export const TOAST_EVENT = "salwa:toast";
+export const TOAST_EVENT = "salon:toast";
 
 export type ToastKind = "success" | "error" | "info";
 

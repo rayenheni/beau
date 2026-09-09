@@ -1,6 +1,7 @@
 import { Quote, Star } from "lucide-react";
 import { FadeUp, SectionHeader } from "./Reveal";
 import { FacebookIcon } from "./BrandIcons";
+import { SALON } from "@/lib/salon";
 
 const reviews = [
   {
@@ -63,7 +64,7 @@ export default function Testimonials() {
 
         <FadeUp delay={0.2}>
           <a
-            href="https://www.facebook.com/p/Salon-Salwa-de-Coiffure-dEsth%C3%A9tique-100063708455598/"
+            href={SALON.facebook}
             target="_blank"
             rel="noreferrer"
             className="group mx-auto mt-10 flex w-fit items-center gap-4 rounded-full border border-espresso/12 bg-ivory px-7 py-4 transition-all duration-300 hover:border-bronze"

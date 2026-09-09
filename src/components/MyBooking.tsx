@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CalendarDays, Clock, Loader2, Search, Trash2, X } from "lucide-react";
-import { formatFrDate } from "@/lib/booking";
+import { SALON, formatFrDate } from "@/lib/booking";
 import { EASE } from "./Reveal";
 import { toast } from "./Toast";
 
@@ -150,7 +150,7 @@ export default function MyBookingModal({ open, onClose }: { open: boolean; onClo
                 <input
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
-                  placeholder={mode === "reference" ? "SW-XXXXX" : "+216 98 000 000"}
+                  placeholder={mode === "reference" ? `${SALON.refPrefix}-XXXXX` : "+216 98 000 000"}
                   className="min-w-0 flex-1 rounded-xl border border-espresso/15 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-espresso/35 focus:border-bronze focus:ring-2 focus:ring-bronze/20"
                   aria-label={mode === "reference" ? "Votre référence" : "Votre numéro de téléphone"}
                 />
@@ -215,7 +215,7 @@ export default function MyBookingModal({ open, onClose }: { open: boolean; onClo
 
               {rows && rows.length === 0 && !error && (
                 <p className="mt-5 rounded-xl border border-dashed border-espresso/20 bg-white/60 px-4 py-6 text-center text-sm text-espresso/55">
-                  Aucune demande trouvée. Vérifiez votre saisie ou appelez-nous au 29 311 109.
+                  Aucune demande trouvée. Vérifiez votre saisie ou appelez-nous au {SALON.phoneDisplay}.
                 </p>
               )}
             </div>

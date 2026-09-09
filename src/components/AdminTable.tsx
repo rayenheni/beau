@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CalendarDays, Clock, Check, CheckCheck, Hourglass, Loader2, Trash2, Undo2, X } from "lucide-react";
+import { CalendarDays, Clock, Check, CheckCheck, Hourglass, Loader2, MessageCircle, Trash2, Undo2, X } from "lucide-react";
 import type { AdminRow } from "@/app/admin/page";
+import { buildReminderText, clientWhatsAppLink } from "@/lib/booking";
 
 const STATUS: Record<string, { label: string; cls: string }> = {
   pending: { label: "En attente", cls: "border-amber-300 bg-amber-50 text-amber-800" },
@@ -158,6 +159,25 @@ export default function AdminTable({ rows }: { rows: AdminRow[] }) {
                             <X className="h-4 w-4" />
                           </button>
                         )}
+                        <a
+                          href={clientWhatsAppLink(
+                            r.phone,
+                            buildReminderText({
+                              name: r.name,
+                              service: r.service,
+                              date: r.date,
+                              time: r.time,
+                              reference: r.reference,
+                            })
+                          )}
+                          target="_blank"
+                          rel="noreferrer"
+                          title="Rappel WhatsApp"
+                          aria-label="Envoyer un rappel WhatsApp"
+                          className="grid h-8 w-8 place-items-center rounded-full border border-emerald-300 text-emerald-700 transition-colors hover:bg-emerald-600 hover:text-white"
+                        >
+                          <MessageCircle className="h-4 w-4" />
+                        </a>
                         <button
                           onClick={() => remove(r.id)}
                           title="Supprimer"

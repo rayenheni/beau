@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { SALON } from "@/lib/salon";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -18,23 +19,16 @@ const manrope = Manrope({
   display: "swap",
 });
 
+const pageTitle = `${SALON.name} — ${SALON.city}`;
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-  title: "Salon Salwa · Coiffure & Esthétique — Tunis",
-  description:
-    "Salon de coiffure & d'esthétique au cœur du centre-ville de Tunis. Balayage, lissage kératine, chignons de mariée, maquillage, soins du visage, manucure. Il est toujours temps de se faire plus belle.",
-  keywords: [
-    "salon de coiffure tunis",
-    "coiffure esthétique tunis",
-    "balayage tunis",
-    "lissage kératine tunis",
-    "maquillage mariée tunis",
-    "salon salwa",
-  ],
+  metadataBase: new URL(SALON.siteUrl),
+  title: pageTitle,
+  description: SALON.description,
+  keywords: SALON.keywords,
   openGraph: {
-    title: "Salon Salwa · Coiffure & Esthétique — Tunis",
-    description:
-      "Il est toujours temps de se faire plus belle. Salon de coiffure & d'esthétique au centre-ville de Tunis.",
+    title: pageTitle,
+    description: SALON.slogan,
     images: ["/images/hero.jpg"],
     locale: "fr_TN",
     type: "website",
@@ -44,27 +38,16 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "BeautySalon",
-  name: "Salon Salwa de Coiffure & d'Esthétique",
-  slogan: "Il est toujours temps de se faire plus belle",
-  telephone: "+21629311109",
+  name: SALON.name,
+  slogan: SALON.slogan,
+  telephone: SALON.phone,
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Rue Houcine Bouzaiene, à côté du Théâtre de l'Étoile du Nord, Centre-Ville",
-    addressLocality: "Tunis",
+    streetAddress: SALON.address,
+    addressLocality: SALON.city,
     addressCountry: "TN",
   },
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      opens: "09:00",
-      closes: "19:00",
-    },
-  ],
-  sameAs: [
-    "https://www.facebook.com/p/Salon-Salwa-de-Coiffure-dEsth%C3%A9tique-100063708455598/",
-    "https://www.instagram.com/salon.salwa/",
-  ],
+  sameAs: [SALON.facebook, SALON.instagram].filter(Boolean),
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -3,6 +3,7 @@ import { and, desc, eq, gt, or, sql } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/db";
 import { appointments, notifications } from "@/db/schema";
+import { SALON } from "@/lib/salon";
 import { findService } from "@/lib/services";
 import { getSettings } from "@/lib/settings";
 import { busyIntervals, canFit, dayIsOpen, slotIsWithinHours, windowFor } from "@/lib/conflicts";
@@ -14,7 +15,7 @@ const ALPHABET = "ACDEFGHJKLMNPQRTUVWXY34679";
 function makeReference() {
   let out = "";
   for (let i = 0; i < 5; i++) out += ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
-  return `SW-${out}`;
+  return `${SALON.refPrefix}-${out}`;
 }
 
 const createSchema = z.object({
@@ -59,7 +60,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           message:
-            "Trop de demandes envoyées. Merci de patienter quelques minutes ou de nous appeler au 29 311 109.",
+            `Trop de demandes envoyées. Merci de patienter quelques minutes ou de nous appeler au ${SALON.phoneDisplay}.`,
         },
         { status: 429 }
       );

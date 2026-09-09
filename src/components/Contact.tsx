@@ -1,30 +1,31 @@
 import { ArrowUpRight, Clock, MapPin, Phone } from "lucide-react";
 import { FadeUp, SectionHeader } from "./Reveal";
 import { FacebookIcon, InstagramIcon } from "./BrandIcons";
-
-const infos = [
-  {
-    icon: MapPin,
-    label: "Adresse",
-    lines: ["Rue Houcine Bouzaiene, à côté du", "Théâtre de l'Étoile du Nord, Centre-Ville — Tunis"],
-    href: "https://www.google.com/maps/search/?api=1&query=Th%C3%A9%C3%A2tre+de+l%27%C3%89toile+du+Nord+Tunis",
-    hrefLabel: "Itinéraire",
-  },
-  {
-    icon: Phone,
-    label: "Téléphone",
-    lines: ["+216 29 311 109"],
-    href: "tel:+21629311109",
-    hrefLabel: "Appeler",
-  },
-  {
-    icon: Clock,
-    label: "Horaires",
-    lines: ["Lundi – Samedi : 09:00 – 19:00", "Dimanche : sur rendez-vous"],
-  },
-];
+import { SALON } from "@/lib/salon";
 
 export default function Contact() {
+  const infos = [
+    {
+      icon: MapPin,
+      label: "Adresse",
+      lines: [SALON.address],
+      href: SALON.mapsUrl,
+      hrefLabel: "Itinéraire",
+    },
+    {
+      icon: Phone,
+      label: "Téléphone",
+      lines: [SALON.phoneDisplay],
+      href: `tel:${SALON.phone}`,
+      hrefLabel: "Appeler",
+    },
+    {
+      icon: Clock,
+      label: "Horaires",
+      lines: ["Lundi – Samedi : 09:00 – 19:00", "Dimanche : sur rendez-vous"],
+    },
+  ];
+
   return (
     <section id="contact" className="scroll-mt-24 bg-cream py-24 md:py-32">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-14 px-6 md:grid-cols-2 md:px-10">
@@ -33,11 +34,11 @@ export default function Contact() {
             eyebrow="Nous trouver"
             title={
               <>
-                À deux pas de{" "}
-                <span className="italic text-bronze">l&apos;Étoile du Nord</span>
+                Retrouvez-nous{" "}
+                <span className="italic text-bronze">à {SALON.addressShort}</span>
               </>
             }
-            description="Le salon vous accueille au cœur du centre-ville de Tunis, dans un cadre chaleureux et intimiste. Passez nous voir, l'accueil est toujours avec le sourire."
+            description={`Le salon vous accueille ${SALON.address}, dans un cadre chaleureux et intimiste. Passez nous voir, l'accueil est toujours avec le sourire.`}
           />
 
           <div className="mt-10 space-y-7">
@@ -78,24 +79,28 @@ export default function Contact() {
                   Suivez-nous
                 </p>
                 <span className="h-px w-8 bg-espresso/20" />
-                <a
-                  href="https://www.facebook.com/p/Salon-Salwa-de-Coiffure-dEsth%C3%A9tique-100063708455598/"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Facebook du salon"
-                  className="grid h-11 w-11 place-items-center rounded-full border border-espresso/15 text-espresso/70 transition-all duration-300 hover:border-bronze hover:bg-bronze hover:text-ivory"
-                >
-                  <FacebookIcon className="h-5 w-5" />
-                </a>
-                <a
-                  href="https://www.instagram.com/salon.salwa/"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Instagram du salon"
-                  className="grid h-11 w-11 place-items-center rounded-full border border-espresso/15 text-espresso/70 transition-all duration-300 hover:border-bronze hover:bg-bronze hover:text-ivory"
-                >
-                  <InstagramIcon className="h-5 w-5" />
-                </a>
+                {SALON.facebook && (
+                  <a
+                    href={SALON.facebook}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Facebook du salon"
+                    className="grid h-11 w-11 place-items-center rounded-full border border-espresso/15 text-espresso/70 transition-all duration-300 hover:border-bronze hover:bg-bronze hover:text-ivory"
+                  >
+                    <FacebookIcon className="h-5 w-5" />
+                  </a>
+                )}
+                {SALON.instagram && (
+                  <a
+                    href={SALON.instagram}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Instagram du salon"
+                    className="grid h-11 w-11 place-items-center rounded-full border border-espresso/15 text-espresso/70 transition-all duration-300 hover:border-bronze hover:bg-bronze hover:text-ivory"
+                  >
+                    <InstagramIcon className="h-5 w-5" />
+                  </a>
+                )}
               </div>
             </FadeUp>
           </div>
@@ -104,8 +109,8 @@ export default function Contact() {
         <FadeUp delay={0.2} className="relative">
           <div className="overflow-hidden rounded-[2rem] border border-espresso/10 shadow-[0_40px_80px_-45px_rgba(60,45,33,0.5)]">
             <iframe
-              title="Plan d'accès — Salon Salwa, rue Houcine Bouzaiene, Tunis"
-              src="https://www.google.com/maps?q=Th%C3%A9%C3%A2tre%20de%20l'%C3%89toile%20du%20Nord%2C%20Tunis%2C%20Tunisie&z=16&output=embed"
+              title={`Plan d'accès — ${SALON.name}, ${SALON.address}`}
+              src={SALON.mapsEmbed}
               className="map-frame h-[420px] w-full md:h-[520px]"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -113,9 +118,9 @@ export default function Contact() {
           </div>
           <div className="absolute -bottom-5 left-6 rounded-2xl bg-espresso px-6 py-4 text-ivory shadow-xl md:left-10">
             <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-bronze-light">
-              Salon Salwa
+              {SALON.shortName}
             </p>
-            <p className="mt-1 font-serif text-lg italic">Centre-Ville, Tunis</p>
+            <p className="mt-1 font-serif text-lg italic">{SALON.addressShort}</p>
           </div>
         </FadeUp>
       </div>

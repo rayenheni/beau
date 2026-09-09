@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { findLegalDoc, legalDocs } from "@/lib/legal";
+import { SALON } from "@/lib/salon";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { FadeUp } from "@/components/Reveal";
@@ -19,7 +20,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const doc = findLegalDoc(slug);
   return {
-    title: doc ? `${doc.title} — Salon Salwa` : "Document juridique — Salon Salwa",
+    title: doc ? `${doc.title} — ${SALON.name}` : `Document juridique — ${SALON.name}`,
     description: doc?.intro,
     robots: { index: true, follow: true },
   };
@@ -85,10 +86,10 @@ export default async function LegalPage({ params }: { params: Promise<{ slug: st
               </p>
               <p className="mt-2 text-sm leading-relaxed text-espresso/70">
                 Pour toute précision sur ces informations, appelez-nous au{" "}
-                <a href="tel:+21629311109" className="font-semibold text-bronze">
-                  +216 29 311 109
+                <a href={`tel:${SALON.phone}`} className="font-semibold text-bronze">
+                  {SALON.phoneDisplay}
                 </a>{" "}
-                ou passez nous voir au salon, rue Houcine Bouzaiene à Tunis.
+                ou passez nous voir au salon, {SALON.address}.
               </p>
             </div>
           </FadeUp>
