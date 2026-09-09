@@ -17,3 +17,5 @@ build/
 # Next.js generated
 next-env.d.ts
 *.tsbuildinfo
+# Preview locale (base PostgreSQL sandbox)
+.preview-pgdata/

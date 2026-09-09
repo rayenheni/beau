@@ -1,23 +1,21 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { SALON } from "@/lib/salon";
+// Polices auto-hébergées (Fontsource) : aucun appel à Google Fonts,
+// site plus rapide et aucune donnée transmise à un tiers (INPDP-friendly).
+import "@fontsource/cormorant-garamond/400.css";
+import "@fontsource/cormorant-garamond/500.css";
+import "@fontsource/cormorant-garamond/600.css";
+import "@fontsource/cormorant-garamond/700.css";
+import "@fontsource/cormorant-garamond/400-italic.css";
+import "@fontsource/cormorant-garamond/500-italic.css";
+import "@fontsource/cormorant-garamond/600-italic.css";
+import "@fontsource/manrope/400.css";
+import "@fontsource/manrope/500.css";
+import "@fontsource/manrope/600.css";
+import "@fontsource/manrope/700.css";
+import "@fontsource/manrope/800.css";
 import "./globals.css";
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-cormorant",
-  display: "swap",
-});
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-manrope",
-  display: "swap",
-});
 
 const pageTitle = `${SALON.name} — ${SALON.city}`;
 
@@ -52,7 +50,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="fr" className={`${cormorant.variable} ${manrope.variable}`}>
+    <html lang="fr">
       <body className="bg-ivory font-sans text-espresso antialiased">
         <script
           type="application/ld+json"
