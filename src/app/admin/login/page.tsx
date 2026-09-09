@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, KeyRound, Loader2, Lock } from "lucide-react";
@@ -9,7 +8,6 @@ import { EASE } from "@/components/Reveal";
 import { SALON } from "@/lib/salon";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -26,8 +24,9 @@ export default function AdminLoginPage() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.message || "Connexion impossible.");
-      router.replace("/admin");
-      router.refresh();
+      // Navigation dure : garantit que le cookie de session tout juste posé
+      // est pris en compte, sans risque de cache routeur.
+      window.location.assign("/admin");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Connexion impossible.");
     } finally {

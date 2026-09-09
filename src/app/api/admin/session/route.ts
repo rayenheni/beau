@@ -5,6 +5,27 @@ import { COOKIE_MAX_AGE, COOKIE_NAME, createToken, isAdminConfigured } from "@/l
 
 const schema = z.object({ password: z.string().min(1, "Mot de passe requis.") });
 
+/**
+ * Attributs du cookie de session selon le contexte :
+ * - HTTPS (production Vercel, prévisualisation proxifiée, iframe) :
+ *   SameSite=None + Secure, sinon les navigateurs récents bloquent le cookie
+ *   en contexte tiers et la connexion semble ne pas aboutir (retour au login).
+ * - HTTP local (npm run dev sur localhost) : SameSite=Lax, sans Secure
+ *   (un cookie Secure ne serait jamais renvoyé en HTTP).
+ */
+function cookieAttrs(req: Request) {
+  const https =
+    req.headers.get("x-forwarded-proto") === "https" ||
+    process.env.NODE_ENV === "production";
+  return {
+    httpOnly: true,
+    sameSite: (https ? "none" : "lax") as "none" | "lax",
+    secure: https,
+    path: "/",
+    maxAge: COOKIE_MAX_AGE,
+  };
+}
+
 export async function POST(req: Request) {
   if (!isAdminConfigured()) {
     return NextResponse.json(
@@ -44,18 +65,14 @@ export async function POST(req: Request) {
   }
 
   const res = NextResponse.json({ ok: true });
-  res.cookies.set(COOKIE_NAME, createToken(), {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: COOKIE_MAX_AGE,
-  });
+  res.cookies.set(COOKIE_NAME, createToken(), cookieAttrs(req));
   return res;
 }
 
-export async function DELETE() {
+export async function DELETE(req: Request) {
   const res = NextResponse.json({ ok: true });
-  res.cookies.set(COOKIE_NAME, "", { httpOnly: true, path: "/", maxAge: 0 });
+  // La suppression doit reprendre les mêmes attributs (sameSite/secure),
+  // sinon le navigateur conserve le cookie.
+  res.cookies.set(COOKIE_NAME, "", { ...cookieAttrs(req), maxAge: 0 });
   return res;
 }
