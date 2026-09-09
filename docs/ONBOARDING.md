@@ -105,7 +105,20 @@ DATABASE_URL="<connection-string-neon>" npm run seed:demo
 
 ---
 
-## 6. Après-vente (facturé ou inclus selon contrat)
+## 6. Mode démo (démonstrations uniquement — JAMAIS en production)
+
+Pour présenter l'espace pro sans mot de passe (ex. navigateur qui bloque
+les cookies tiers dans un aperçu intégré, démo commerciale sur votre PC) :
+
+```bash
+PREVIEW_OPEN_ADMIN=1 NEXT_PUBLIC_PREVIEW_OPEN_ADMIN=1 npm run dev
+```
+
+- La page `/admin/login` affiche alors un bouton « Entrer sans mot de passe ».
+- ⚠️ Ne définissez **jamais** ces variables sur Vercel / en production :
+  elles désactivent toute la protection de l'espace pro.
+
+## 7. Après-vente (facturé ou inclus selon contrat)
 
 | Demande | Action |
 |---|---|

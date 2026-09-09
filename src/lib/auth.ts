@@ -40,8 +40,23 @@ export function verifyToken(token: string | undefined | null) {
   }
 }
 
+/**
+ * MODE DÉMO — prévisualisation uniquement.
+ * Quand PREVIEW_OPEN_ADMIN=1, l'espace pro et ses API sont accessibles
+ * sans mot de passe (utile quand le navigateur bloque les cookies tiers,
+ * ex. aperçu intégré, ou pour une démonstration commerciale).
+ *
+ * ⚠️  NE JAMAIS définir cette variable en production (Vercel) :
+ * elle désactive toute la protection de l'espace pro. Réservée aux
+ * environnements déjà protégés autrement (URL secrète + token d'accès).
+ */
+export function isPreviewOpenAdmin() {
+  return process.env.PREVIEW_OPEN_ADMIN === "1";
+}
+
 /** À utiliser dans les composants serveur et les route handlers. */
 export async function isAuthenticated() {
+  if (isPreviewOpenAdmin()) return true;
   const store = await cookies();
   return verifyToken(store.get(COOKIE_NAME)?.value);
 }

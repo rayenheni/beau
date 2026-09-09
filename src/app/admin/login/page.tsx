@@ -108,6 +108,14 @@ export default function AdminLoginPage() {
             <Lock className="h-6 w-6" />
           </span>
           <p className="mt-6 font-serif text-4xl font-medium italic tracking-tight">{SALON.shortName}</p>
+          {process.env.NEXT_PUBLIC_PREVIEW_OPEN_ADMIN === "1" && (
+            <button
+              onClick={() => window.location.assign("/admin")}
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-dashed border-amber-300/60 bg-amber-300/10 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-amber-200 transition-colors hover:bg-amber-300/20"
+            >
+              Entrer sans mot de passe (mode démo)
+            </button>
+          )}
           <p className="mt-2 text-[9px] font-bold uppercase tracking-[0.42em] text-bronze-light">
             Espace pro · Accès réservé
           </p>
