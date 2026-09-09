@@ -14,10 +14,11 @@ const schema = z.object({ password: z.string().min(1, "Mot de passe requis.") })
 /**
  * Attributs du cookie de session selon le contexte :
  * - HTTPS (production Vercel, prévisualisation proxifiée, iframe) :
- *   SameSite=None + Secure, sinon les navigateurs récents bloquent le cookie
- *   en contexte tiers et la connexion semble ne pas aboutir (retour au login).
- * - HTTP local (npm run dev sur localhost) : SameSite=Lax, sans Secure
- *   (un cookie Secure ne serait jamais renvoyé en HTTP).
+ *   SameSite=None + Secure + Partitioned (CHIPS). Sans cela, les navigateurs
+ *   qui bloquent les cookies tiers jettent le cookie et la connexion semble
+ *   ne pas aboutir (retour silencieux au login). Partitioned exige Secure.
+ * - HTTP local (npm run dev sur localhost) : SameSite=Lax, sans Secure ni
+ *   Partitioned (rejetés en HTTP).
  */
 function cookieAttrs(req: Request) {
   const https =
@@ -27,6 +28,7 @@ function cookieAttrs(req: Request) {
     httpOnly: true,
     sameSite: (https ? "none" : "lax") as "none" | "lax",
     secure: https,
+    partitioned: https,
     path: "/",
     maxAge: COOKIE_MAX_AGE,
   };

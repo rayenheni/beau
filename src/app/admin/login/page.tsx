@@ -11,33 +11,82 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  // true quand le mot de passe est bon mais que le navigateur refuse le cookie.
+  const [needsAccess, setNeedsAccess] = useState(false);
+
+  /** Le navigateur renvoie-t-il le cookie de session ? */
+  async function checkSession() {
+    try {
+      const check = await fetch("/api/admin/session", { cache: "no-store" });
+      const session = await check.json().catch(() => ({}));
+      return check.ok && session.authenticated === true;
+    } catch {
+      return false;
+    }
+  }
+
+  /** Connexion complète : mot de passe + vérification du cookie. */
+  async function doLogin(): Promise<"ok" | "cookie-blocked"> {
+    const res = await fetch("/api/admin/session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.message || "Connexion impossible.");
+    return (await checkSession()) ? "ok" : "cookie-blocked";
+  }
+
+  function canRequestAccess() {
+    return typeof document !== "undefined" && "requestStorageAccess" in document;
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setNeedsAccess(false);
     try {
-      const res = await fetch("/api/admin/session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.message || "Connexion impossible.");
-      // Vérifie que le navigateur renvoie bien le cookie avant de naviguer :
-      // en cas de cookies tiers bloqués (iframe, Safari strict, navigation
-      // privée), on affiche un message clair au lieu d'un retour silencieux au login.
-      const check = await fetch("/api/admin/session", { cache: "no-store" });
-      const session = await check.json().catch(() => ({}));
-      if (!check.ok || !session.authenticated) {
+      const result = await doLogin();
+      if (result === "ok") {
+        // Navigation dure : garantit un état serveur frais, sans cache routeur.
+        window.location.assign("/admin");
+        return;
+      }
+      // Mot de passe bon, mais cookie refusé (cookies tiers bloqués, iframe…).
+      if (canRequestAccess()) {
+        setNeedsAccess(true);
         throw new Error(
-          "Connexion acceptée, mais votre navigateur a refusé le cookie de session (cookies tiers bloqués ou navigation privée). Ouvrez le site dans un onglet normal, autorisez les cookies pour ce site, puis réessayez."
+          "Mot de passe correct, mais votre navigateur bloque les cookies. Cliquez sur « Autoriser » ci-dessous."
         );
       }
-      // Navigation dure : garantit un état serveur frais, sans cache routeur.
-      window.location.assign("/admin");
+      throw new Error(
+        "Connexion acceptée, mais votre navigateur a refusé le cookie de session (cookies tiers bloqués ou navigation privée). Autorisez les cookies pour ce site, puis réessayez."
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Connexion impossible.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  /** Demande au navigateur l'autorisation d'utiliser les cookies (1 clic, standard Storage Access API). */
+  async function grantAccess() {
+    setLoading(true);
+    setError("");
+    try {
+      const doc = document as Document & { requestStorageAccess: () => Promise<void> };
+      await doc.requestStorageAccess();
+      // L'autorisation est accordée : le cookie posé précédemment a pu être
+      // jeté, donc on rejoue la connexion complète.
+      const result = await doLogin();
+      if (result === "ok") {
+        window.location.assign("/admin");
+        return;
+      }
+      setError("Autorisation accordée mais le cookie reste bloqué. Essayez un onglet normal.");
+    } catch {
+      setError("Autorisation refusée par le navigateur. Autorisez les cookies pour ce site, puis réessayez.");
     } finally {
       setLoading(false);
     }
@@ -111,6 +160,17 @@ export default function AdminLoginPage() {
               </>
             )}
           </button>
+
+          {needsAccess && (
+            <button
+              type="button"
+              onClick={grantAccess}
+              disabled={loading}
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border border-bronze-light/60 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-bronze-light transition-colors enabled:hover:bg-bronze-light enabled:hover:text-espresso disabled:opacity-50"
+            >
+              Autoriser les cookies pour ce site
+            </button>
+          )}
 
           <p className="mt-5 text-center text-[11px] leading-relaxed text-ivory/40">
             Cet espace est réservé à l&apos;équipe du salon. La gestion des rendez-vous
