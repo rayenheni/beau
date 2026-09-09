@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  --color-ivory: #f7f2ea;
+  --color-cream: #efe6d8;
+  --color-sand: #e2d3bd;
+  --color-espresso: #211710;
+  --color-cocoa: #3c2d21;
+  --color-bronze: #a97c50;
+  --color-bronze-light: #c79f6f;
+  --color-rose: #d3a894;
+  --color-taupe: #8a7360;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: #a97c50;
+  color: #f7f2ea;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #efe6d8;
+}
+::-webkit-scrollbar-thumb {
+  background: #a97c50;
+  border-radius: 8px;
+  border: 2px solid #efe6d8;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes spin-slower {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 46s linear infinite;
+}
+
+.animate-spin-slower {
+  animation: spin-slower 24s linear infinite;
+}
+
+.animate-float {
+  animation: float-y 7s ease-in-out infinite;
+}
+
+.text-outline {
+  -webkit-text-stroke: 1.5px rgba(199, 159, 111, 0.35);
+  color: transparent;
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+.map-frame {
+  filter: grayscale(0.85) sepia(0.18) contrast(0.92);
+}
+
+:focus-visible {
+  outline: 2px solid #a97c50;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
